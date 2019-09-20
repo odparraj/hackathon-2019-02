@@ -13,6 +13,9 @@ use Illuminate\Http\Request;
 |
 */
 
+
+Route::get('notify','SmsController@index');
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -25,4 +28,4 @@ Route::post('users', function(Request $request){
         'password'=> Hash::make($request->password),
 
     ]);
-});  
+});
