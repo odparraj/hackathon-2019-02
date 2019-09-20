@@ -16,3 +16,13 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::post('users', function(Request $request){
+    return App\User::create([
+        'name'=> $request->name,
+        'email'=> $request->email,
+        'password'=> Hash::make($request->password),
+
+    ]);
+});  

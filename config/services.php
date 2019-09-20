@@ -34,4 +34,12 @@ return [
         'secret' => env('SPARKPOST_SECRET'),
     ],
 
+    'firebase' => [
+        'api_key' => '', // Only used for JS integration
+        'auth_domain' => '', // Only used for JS integration
+        'database_url' => 'https://hackathon-2019-02.firebaseio.com',
+        'secret' => '0jyTLBxg8RucKrcESXs8KTzTXviNIQpnWo8gWihe',
+        'storage_bucket' => '', // Only used for JS integration
+    ]
+
 ];
