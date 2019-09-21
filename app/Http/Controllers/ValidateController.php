@@ -37,7 +37,7 @@ class ValidateController extends Controller
                 "Efecty",
                 "Baloto",
                 "Exito",
-                "pse",
+                "pse"
             ]
         );
     }
@@ -50,7 +50,6 @@ class ValidateController extends Controller
      */
     public function applicationStatus($celphone, $last = true, $opens = true)
     {
-
         $this->informationRepository->celphone = $celphone;
         return  new ApplicationStaus($this->informationRepository->applicationStatus($last, $opens));
     }
