@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateIvrRequest;
 use App\IvrRequest;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use MarcinOrlowski\ResponseBuilder\BaseApiCodes;
@@ -39,8 +40,8 @@ class IvrRequestController extends Controller
 
         $ivrRequest->loadResponse();
 
-        //return ResponseBuilder::success($ivrRequest);
-        return $ivrRequest;
+        return ResponseBuilder::success($ivrRequest);
+        //return $ivrRequest;
     }
 
     /**
@@ -64,21 +65,36 @@ class IvrRequestController extends Controller
     public function update(UpdateIvrRequest $request, IvrRequest $ivrRequest)
     {
         $transition = $request->input('next');
+        if ($transition == 'incomingCall_ingresarNumero') {
+
+            $request->merge([
+                'phone' => $ivrRequest->phone
+            ]);
+
+            $controller = app(ValidateController::class);
+
+            try {
+                $data = $controller->identification($request);
+                $res = $data['data'] ?? null;
+
+                throw_if(is_null($res), new Exception('usuario no encontrado'));
+
+            } catch (Exception $e) {
+                $ivrRequest->state = 'end';
+                $ivrRequest->loadResponse();
+                return ResponseBuilder::success($ivrRequest);
+            }
+        }
 
         try {
             $ivrRequest->apply($transition); // applies transition
             $ivrRequest->save();
-        } catch (SMException $e) {
-
-            $ivrRequest->loadResponse();
-
-            return ResponseBuilder::errorWithMessageAndData(BaseApiCodes::EX_HTTP_EXCEPTION, $e->getMessage(), $ivrRequest, 406);
-        }
+        } catch (SMException $e) { }
 
         $ivrRequest->loadResponse();
 
-        //return ResponseBuilder::success($ivrRequest);
-        return $ivrRequest;
+        return ResponseBuilder::success($ivrRequest);
+        //return $ivrRequest;
     }
 
     /**
