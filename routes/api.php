@@ -19,7 +19,7 @@ Route::get('notify','SmsController@index');
 
 Route::get('validate/client/cellphone/{phone}','ValidateController@cellphone');
 
-Route::get('validate/client/identification/{identification}','ValidateController@identification');
+Route::get('validate/client/identification','ValidateController@identification');
 
 Route::get('validate/pay-methods/{phone}','ValidateController@payMethods');
 

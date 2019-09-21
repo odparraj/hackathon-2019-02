@@ -32,11 +32,12 @@ class ValidateController extends Controller
         return ResponseBuilder::success(new AppContact(Contact::whereCellphone($phone)->first()));
     }
 
-    public function identification($cedula)
+    public function identification(Request $request)
     {
-        return ResponseBuilder::success(new AppContact(Contact::whereCedula($cedula)->first()));
+        $cedula = $request->cedula;
+        $phone = $request->phone;
+        return ResponseBuilder::success($this->informationRepository->validation($cedula, $phone));
     }
-
 
     public function payMethods(){
         return ResponseBuilder::success(new PayMethods(

@@ -9,6 +9,12 @@ class InformationRepository
 
     public $celphone;
 
+    public function validation($cedula, $phone)
+    {
+        $result = Contact::orWhere('cedula', $cedula)->orWhere('cellphone',$phone)->first();
+
+        return $result;
+    }
 
     public function applicationStatus($last = true, $opens = false)
     {
