@@ -26,3 +26,6 @@ Route::post('users', function(Request $request){
 
     ]);
 });  
+
+
+Route::apiResource('ivr-requests', 'IvrRequestController');
