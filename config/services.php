@@ -34,6 +34,12 @@ return [
         'secret' => env('SPARKPOST_SECRET'),
     ],
 
+    'nexmo' => [
+        'key' => env('NEXMO_KEY','29170a93'),
+        'secret' => env('NEXMO_SECRET','ekCnp0ByPexUW2Wh'),
+        'sms_from' => 'NEXMO',
+    ],
+
     'firebase' => [
         'api_key' => '', // Only used for JS integration
         'auth_domain' => '', // Only used for JS integration
