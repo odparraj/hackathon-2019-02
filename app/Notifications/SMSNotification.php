@@ -42,7 +42,7 @@ class SMSNotification extends Notification
     public function toNexmo($notifiable)
     {
         return (new NexmoMessage)
-        ->content($this->data .' --https://api.whatsapp.com/send?phone=+573152631371&text=holaLIneru&source=&data=');
+        ->content($this->data .' Recibe más información -- https://api.whatsapp.com/send?phone=+573152631371&text=holaLIneru&source=&data=');
     }
 
     /**

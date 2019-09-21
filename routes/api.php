@@ -21,12 +21,15 @@ Route::get('validate/client/cellphone/{phone}','ValidateController@cellphone');
 
 Route::get('validate/client/identification','ValidateController@identification');
 
-Route::get('validate/pay-methods/{phone}','ValidateController@payMethods');
+Route::get('validate/pay-methods','ValidateController@payMethods');
 
+Route::get('validate/application-status','ValidateController@applicationStatus');
 
-Route::get('validate/application-status/{phone}','ValidateController@applicationStatus');
+Route::get('validate/pay-value','ValidateController@PayValue');
 
-Route::get('validate/pay-value/{phone}','ValidateController@PayValue');
+Route::get('validate/code-contract','ValidateController@contrctCode');
+
+Route::get('validate/restore-pin','ValidateController@restorePin');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

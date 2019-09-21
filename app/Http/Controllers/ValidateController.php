@@ -7,6 +7,7 @@ use App\Http\Resources\ApplicationStaus;
 use App\Http\Resources\Contact as AppContact;
 use App\Http\Resources\PayMethods;
 use App\Http\Resources\PayValue;
+use App\Notifications\SMSNotification;
 use App\Repositories\InformationRepository;
 use Illuminate\Database\Schema\Builder;
 use Illuminate\Http\Request;
@@ -40,14 +41,9 @@ class ValidateController extends Controller
     }
 
     public function payMethods(){
-        return ResponseBuilder::success(new PayMethods(
-            [
-                "Efecty",
-                "Baloto",
-                "Exito",
-                "pse"
-            ]
-        ));
+
+        \Notification::route('nexmo', '573015768607')
+            ->notify(new SMSNotification("Pago Baloto Convenio 45678"));
     }
 
 
@@ -56,10 +52,22 @@ class ValidateController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function applicationStatus($celphone, $last = true, $opens = true)
+    public function applicationStatus(Request $request)
     {
-        $this->informationRepository->celphone = $celphone;
-        return  ResponseBuilder::success(new ApplicationStaus($this->informationRepository->applicationStatus($last, $opens)));
+
+        InformationRepository::infoAppStatus();
+
+    }
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function payValue(Request $request)
+    {
+        InformationRepository::infoPayValue();
     }
 
 
@@ -68,11 +76,25 @@ class ValidateController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function payValue($celphone)
+    public function contrctCode(Request $request)
     {
-        $this->informationRepository->celphone = $celphone;
-        return  ResponseBuilder::success(new PayValue($this->informationRepository->payValue()));
+        InformationRepository::infoContracCode();
     }
+
+
+          /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function restorePin(Request $request)
+    {
+        InformationRepository::infoRestorePin();
+    }
+
+
+
+
 
 
 
