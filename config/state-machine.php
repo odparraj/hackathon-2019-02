@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ValidateController;
+
 return [
     'ivrRequest' => [
         // class of your domain object
@@ -44,6 +46,15 @@ return [
                     'question' => 'Cual es la razon de consulta?',
                 ],
             ],
+
+            [
+                'name' => 'end',
+                'metadata' => [
+                    'title' => 'end',
+                    'name' => 'Finalizado',
+                    'question' => 'Proceso atendido por el ivr normal',
+                ],
+            ],
         ],
 
         // list of all possible transitions
@@ -54,7 +65,7 @@ return [
                 'metadata' => [
                     'title' => 'Digite el numero de cédula',
                     'type' => 'input',
-                    'name' => 'incomingCall_ingresarCedula'
+                    'name' => 'incomingCall_ingresarCedula',
                 ],
             ],
             'step1_consultarSaldo' => [
@@ -74,10 +85,18 @@ return [
                     'type' => 'option',
                     'name' => 'step1_llamarAsesor'
                 ],
-            ],
+            ]
         ],
 
-        // list of all callbacks
+        'callbacks' => [
+            /* 'after' => [
+                'incomingCall_ingresarCedula' => [
+                    'do' => 'App\Http\Controllers\ValidateController@identification'
+                ]
+            ] */
+        ]
+
+        /* // list of all callbacks
         'callbacks' => [
             // will be called when testing a transition
             'guard' => [
@@ -98,10 +117,12 @@ return [
             ],
 
             // will be called before applying a transition
-            'before' => [],
+            'before' => [
+                incomingCall_ingresarCedula
+            ],
 
             // will be called after applying a transition
             'after' => [],
-        ],
+        ], */
     ],
 ];
