@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Contact;
 use App\Http\Resources\ApplicationStaus;
+use App\Http\Resources\Contact as AppContact;
 use App\Http\Resources\PayMethods;
 use App\Http\Resources\PayValue;
 use App\Repositories\InformationRepository;
 use Illuminate\Database\Schema\Builder;
 use Illuminate\Http\Request;
+use MarcinOrlowski\ResponseBuilder\ResponseBuilder;
 
 class ValidateController extends Controller
 {
@@ -25,21 +27,27 @@ class ValidateController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($phone)
+    public function cellphone($phone)
     {
-        return Contact::whereCellphone($phone)->first()->applications()->first()->status()->get();
+        return ResponseBuilder::success(new AppContact(Contact::whereCellphone($phone)->first()));
     }
 
+    public function identification(Request $request)
+    {
+        $cedula = $request->cedula;
+        $phone = $request->phone;
+        return ResponseBuilder::success($this->informationRepository->validation($cedula, $phone));
+    }
 
     public function payMethods(){
-        return new PayMethods(
+        return ResponseBuilder::success(new PayMethods(
             [
                 "Efecty",
                 "Baloto",
                 "Exito",
                 "pse"
             ]
-        );
+        ));
     }
 
 
@@ -51,7 +59,7 @@ class ValidateController extends Controller
     public function applicationStatus($celphone, $last = true, $opens = true)
     {
         $this->informationRepository->celphone = $celphone;
-        return  new ApplicationStaus($this->informationRepository->applicationStatus($last, $opens));
+        return  ResponseBuilder::success(new ApplicationStaus($this->informationRepository->applicationStatus($last, $opens)));
     }
 
 
@@ -63,7 +71,7 @@ class ValidateController extends Controller
     public function payValue($celphone)
     {
         $this->informationRepository->celphone = $celphone;
-        return  new PayValue($this->informationRepository->payValue());
+        return  ResponseBuilder::success(new PayValue($this->informationRepository->payValue()));
     }
 
 
