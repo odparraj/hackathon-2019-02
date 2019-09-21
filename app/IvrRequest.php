@@ -21,7 +21,7 @@ class IvrRequest extends Model
     ];
 
     protected $fillable = [
-        'uuid', 'state', 'user_id', 'metadata'
+        'uuid', 'state', 'user_id', 'metadata', 'phone'
     ];
 
     protected $hidden = ['id', 'state'];
