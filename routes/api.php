@@ -16,6 +16,16 @@ use Illuminate\Http\Request;
 
 Route::get('notify','SmsController@index');
 
+
+Route::get('validate/client/{phone}','ValidateController@index');
+
+Route::get('validate/pay-methods/{phone}','ValidateController@payMethods');
+
+
+Route::get('validate/application-status/{phone}','ValidateController@applicationStatus');
+
+Route::get('validate/pay-value/{phone}','ValidateController@PayValue');
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
