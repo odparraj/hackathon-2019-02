@@ -38,4 +38,7 @@ Route::post('users', function(Request $request){
         'password'=> Hash::make($request->password),
 
     ]);
-});
+});  
+
+
+Route::apiResource('ivr-requests', 'IvrRequestController');

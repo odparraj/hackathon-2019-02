@@ -5,16 +5,17 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Passport\HasApiTokens;
 use Mpociot\Firebase\SyncsWithFirebase;
 
 class User extends Authenticatable
 {
-    use Notifiable, SyncsWithFirebase;
+    use Notifiable, SyncsWithFirebase, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var arrayHasApiTokens
      */
     protected $fillable = [
         'name', 'email', 'password',
