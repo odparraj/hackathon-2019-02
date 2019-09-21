@@ -19,6 +19,7 @@ class CreateIvrRequestsTable extends Migration
             $table->uuid('uuid');
             $table->string('state');
             $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('phone');
             $table->text('metadata');
 
             $table->timestamps();

@@ -33,12 +33,14 @@ class IvrRequestController extends Controller
         $ivrRequest = IvrRequest::create([
             'uuid' => Str::uuid(),
             'state' => 'incomingCall',
-            'metadata' => []
+            'metadata' => [],
+            'phone' => $request->phone
         ]);
 
         $ivrRequest->loadResponse();
 
-        return ResponseBuilder::success($ivrRequest);
+        //return ResponseBuilder::success($ivrRequest);
+        return $ivrRequest;
     }
 
     /**
@@ -75,7 +77,8 @@ class IvrRequestController extends Controller
 
         $ivrRequest->loadResponse();
 
-        return ResponseBuilder::success($ivrRequest);
+        //return ResponseBuilder::success($ivrRequest);
+        return $ivrRequest;
     }
 
     /**

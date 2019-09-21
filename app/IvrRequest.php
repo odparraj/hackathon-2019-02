@@ -21,7 +21,7 @@ class IvrRequest extends Model
     ];
 
     protected $fillable = [
-        'uuid', 'state', 'user_id', 'metadata'
+        'uuid', 'state', 'user_id', 'metadata', 'phone'
     ];
 
     protected $hidden = ['id', 'state'];
@@ -33,7 +33,7 @@ class IvrRequest extends Model
 
         $possibleTransitions = $this->stateMachine()->getPossibleTransitions();
         foreach ($possibleTransitions as $transition) {
-            $response['possible_transitions'][$transition] =  $this->stateMachine()->metadata('transition', $transition);
+            $response['possible_transitions'][] =  $this->stateMachine()->metadata('transition', $transition);
         }
 
         $this['possible_transitions'] = $response['possible_transitions'] ?? [];

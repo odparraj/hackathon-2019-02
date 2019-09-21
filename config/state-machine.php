@@ -21,6 +21,7 @@ return [
             [
                 'name' => 'incomingCall',
                 'metadata' => [
+                    'name' => 'incomingCall',
                     'title' => 'Incoming Call',
                     'question' => 'Cual es tu numero de cedula ?',
                 ],
@@ -29,6 +30,7 @@ return [
             [
                 'name' => 'step1',
                 'metadata' => [
+                    'name' => 'step1',
                     'title' => 'Step 1',
                     'question' => 'En que podemos ayudarte ? ',
                 ],
@@ -37,7 +39,8 @@ return [
             [
                 'name' => 'step2',
                 'metadata' => [
-                    'title' => 'Step 2',
+                    'title' => 'step2',
+                    'name' => 'Step 2',
                     'question' => 'Cual es la razon de consulta?',
                 ],
             ],
