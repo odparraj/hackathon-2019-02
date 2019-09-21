@@ -13,18 +13,14 @@ class WhatsappNotification extends Notification
 {
     use Queueable;
 
-    private $message;
-    private $contact;
-
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(string $message, $contact)
+    public function __construct()
     {
-        $this->message = $message;
-        $this->contact = $contact;
+        //
     }
 
     /**
@@ -47,16 +43,12 @@ class WhatsappNotification extends Notification
     public function toWhatsapp($notifiable)
     {
         $client = new Client();
-        $client->post('https://go.botmaker.com/api/v1.0/message/v3', [
-            "body" => [
-                "chatPlatform" => "whatsapp",
-                "chatChannelNumber" => "573152631371",
-                "platformContactId" => $this->contact,
-                "messageText" => $this->message
+        $result = $client->post('your-request-uri', [
+            'form_params' => [
+                'sample-form-data' => 'value'
             ],
             "header" => [
-                "access-token" => "eyJhbGciOiJIUzUxMiJ9.eyJidXNpbmVzc0lkIjoiTGluZXJ1IiwibmFtZSI6Ikp1YW4gUm96byIsImFwaSI6dHJ1ZSwiaWQiOiJVS0RSMmVvcjNJYVF3MUs3eUhrdTBwOTFyOWgxIiwiZXhwIjoxNzI2MzI2MjQ2LCJqdGkiOiJVS0RSMmVvcjNJYVF3MUs3eUhrdTBwOTFyOWgxIn0.0Rn8Gve5X2r-9Yq8vjyYVfRXjRzgc_BOnzppiZpUQOTLOakQL3G3n7rQdoC62gE8lquEFwqHFXNStGK94kPNGg",
-                "Content-Type" => "application/json"
+
             ]
         ]);
     }
