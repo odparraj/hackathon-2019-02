@@ -54,10 +54,10 @@ class InformationRepository
 
 */
 
-    public static function applicationStatus($cellphone, $last = true, $opens = false)
+    public static function applicationStatus($cellphone,$cedula, $last = true, $opens = false)
     {
 
-        $appStatus = Contact::where('cellphone', $cellphone)->with(['applications' => function ($query) use ($last, $opens) {
+        $appStatus = Contact::where('cellphone', $cellphone)->orWhere('cedula',$cedula)->with(['applications' => function ($query) use ($last, $opens) {
 
             if ($last && !$opens) {
                 $query->orderBy('created_at', 'desc')->limit(1);
@@ -81,9 +81,9 @@ class InformationRepository
     }
 
 
-    public static function payValue($cellphone)
+    public static function payValue($cellphone, $cedula)
     {
-        $appStatus = Contact::where('cellphone', $cellphone)->with(['applications' => function ($query) {
+        $appStatus = Contact::where('cellphone', $cellphone)->orWhere('cedula',$cedula)->with(['applications' => function ($query) {
 
             $query->where('id_status',2)->orderBy('created_at', 'desc')->limit(1);
 
@@ -100,8 +100,10 @@ class InformationRepository
     public static function infoAppStatus()
     {
         $phone = request('phone');
+        $cedula = request('cedula');
+        
 
-        $data = self::applicationStatus($phone,true, false);
+        $data = self::applicationStatus($phone,$cedula,true, false);
 
         $application = $data->applications()->first();
 
@@ -115,7 +117,9 @@ class InformationRepository
     public static function infoPayValue()
     {
         $phone = request('phone');
-        $result = InformationRepository::payValue($phone);
+        $cedula = request('cedula');
+
+        $result = InformationRepository::payValue($phone,$cedula);
         $amount = $result->amount;
         $due_date = $result->due_date;
 
@@ -127,7 +131,8 @@ class InformationRepository
     public static function infoContracCode()
     {
         $phone = request('phone');
-        $result = InformationRepository::payValue($phone);
+        $cedula = request('cedula');
+        $result = InformationRepository::payValue($phone,$cedula);
         $code = $result->uid;
 
         \Notification::route('nexmo', '573015768607')
@@ -138,7 +143,8 @@ class InformationRepository
     public static function infoRestorePin()
     {
         $phone = request('phone');
-        $result = InformationRepository::payValue($phone);
+        $cedula = request('cedula');
+        $result = InformationRepository::payValue($phone,$cedula);
         $code = $result->uid;
 
         \Notification::route('nexmo', '573015768607')

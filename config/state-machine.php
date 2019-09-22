@@ -41,9 +41,9 @@ return [
             [
                 'name' => 'step2',
                 'metadata' => [
-                    'title' => 'step2',
-                    'name' => 'Step 2',
-                    'question' => 'Cual es la razon de consulta?',
+                    'name' => 'step2',
+                    'title' => 'Step 2',
+                    'question' => 'Un mensaje de texto fue enviado a tu celular con la información requerida.',
                 ],
             ],
 
@@ -68,32 +68,76 @@ return [
                     'name' => 'incomingCall_ingresarCedula',
                 ],
             ],
-            'step1_consultarSaldo' => [
+            'step1_metodosDePago' => [
                 'from' =>  ['step1'],
                 'to' => 'step2',
                 'metadata' => [
-                    'title' => '1. Llamar a un asesor',
+                    'title' => 'Consultar metodos de pago',
                     'type' => 'option',
-                    'name' => 'step1_consultarSaldo'
+                    'name' => 'step1_metodosDePago'
                 ],
             ],
-            'step1_llamarAsesor' => [
+            'step1_estadoDeApp' => [
                 'from' =>  ['step1'],
                 'to' => 'step2',
                 'metadata' => [
-                    'title' => '2. Ir al chat',
+                    'title' => 'Consultar el estado de mi credito',
                     'type' => 'option',
-                    'name' => 'step1_llamarAsesor'
+                    'name' => 'step1_estadoDeApp'
+                ],
+            ],
+            'step1_consultarPago' => [
+                'from' =>  ['step1'],
+                'to' => 'step2',
+                'metadata' => [
+                    'title' => 'Consultar Pago a la fecha',
+                    'type' => 'option',
+                    'name' => 'step1_consultarPago'
+                ],
+            ],
+            'step1_codigoDeContrato' => [
+                'from' =>  ['step1'],
+                'to' => 'step2',
+                'metadata' => [
+                    'title' => 'Reenviar codigo de contrato',
+                    'type' => 'option',
+                    'name' => 'step1_codigoDeContrato'
+                ],
+            ],
+            'step1_restorePin' => [
+                'from' =>  ['step1'],
+                'to' => 'step2',
+                'metadata' => [
+                    'title' => 'Recuperación de pin',
+                    'type' => 'option',
+                    'name' => 'step1_restorePin'
                 ],
             ]
         ],
 
         'callbacks' => [
-            /* 'after' => [
-                'incomingCall_ingresarCedula' => [
-                    'do' => 'App\Http\Controllers\ValidateController@identification'
+            'after' => [
+                'step1_metodosDePago' => [
+                    'on' => 'step1_metodosDePago',
+                    'do' => 'App\Repositories\InformationRepository@payMethods'
+                ],
+                'step1_estadoDeApp' => [
+                    'on' => 'step1_estadoDeApp',
+                    'do' => 'App\Repositories\InformationRepository@infoAppStatus'
+                ],
+                'step1_consultarPago' => [
+                    'on' => 'step1_consultarPago',
+                    'do' => 'App\Repositories\InformationRepository@infoPayValue'
+                ],
+                'step1_codigoDeContrato' => [
+                    'on' => 'step1_codigoDeContrato',
+                    'do' => 'App\Repositories\InformationRepository@infoContracCode'
+                ],
+                'step1_restorePin' => [
+                    'on' => 'step1_restorePin',
+                    'do' => 'App\Repositories\InformationRepository@infoRestorePin'
                 ]
-            ] */
+            ]
         ]
 
         /* // list of all callbacks

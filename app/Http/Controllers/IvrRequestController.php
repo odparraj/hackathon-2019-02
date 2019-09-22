@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateIvrRequest;
 use App\Http\Requests\UpdateIvrRequest;
 use App\IvrRequest;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use MarcinOrlowski\ResponseBuilder\BaseApiCodes;
 use MarcinOrlowski\ResponseBuilder\ResponseBuilder;
@@ -29,7 +31,7 @@ class IvrRequestController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateIvrRequest $request)
     {
         $ivrRequest = IvrRequest::create([
             'uuid' => Str::uuid(),
@@ -64,20 +66,24 @@ class IvrRequestController extends Controller
      */
     public function update(UpdateIvrRequest $request, IvrRequest $ivrRequest)
     {
+        $request->merge([
+            'phone' => $ivrRequest->phone,
+            'cedula' => Arr::get($ivrRequest->metadata, 'cedula', $request->data) 
+        ]);
+
         $transition = $request->input('next');
-        if ($transition == 'incomingCall_ingresarNumero') {
-
-            $request->merge([
-                'phone' => $ivrRequest->phone
-            ]);
-
+        if ($transition == 'incomingCall_ingresarCedula') {
+            $ivrRequest->metadata = [
+                'cedula' => $request->data
+            ]; 
+            $ivrRequest->save();
+            //dd('no paso');
             $controller = app(ValidateController::class);
 
             try {
                 $data = $controller->identification($request);
-                $res = $data['data'] ?? null;
-
-                throw_if(is_null($res), new Exception('usuario no encontrado'));
+                //dd($data);
+                throw_if(empty($data), new Exception('usuario no encontrado'));
 
             } catch (Exception $e) {
                 $ivrRequest->state = 'end';

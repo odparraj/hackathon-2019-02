@@ -37,7 +37,8 @@ class ValidateController extends Controller
     {
         $cedula = $request->cedula;
         $phone = $request->phone;
-        return ResponseBuilder::success($this->informationRepository->validation($cedula, $phone));
+        $data = $this->informationRepository->validation($cedula, $phone) ?? [];
+        return $data;
     }
 
     public function payMethods(){
